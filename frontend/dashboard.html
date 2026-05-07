@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin — LuxHotel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--primary);
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--gold);
+            text-align: center;
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid rgba(201,168,76,0.2);
+            display: block;
+            text-decoration: none;
+        }
+
+        .sidebar-brand span { color: white; }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1.5rem 0;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1.5rem;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu li a:hover,
+        .sidebar-menu li a.active {
+            color: var(--gold);
+            background: rgba(201,168,76,0.08);
+            border-left-color: var(--gold);
+        }
+
+        .sidebar-menu li a i {
+            width: 18px;
+            text-align: center;
+        }
+
+        .dashboard-content {
+            background: #f0f0f0;
+            padding: 2.5rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .dashboard-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 4px;
+            padding: 1.75rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .stat-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .dash-card {
+            background: white;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .dash-card-header {
+            padding: 1.25rem 1.75rem;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dash-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--secondary);
+        }
+
+        .dash-card-body { padding: 1.75rem; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #888;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        td {
+            padding: 1rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            color: var(--text);
+        }
+
+        tr:hover td { background: rgba(201,168,76,0.04); }
+
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-warning  { background: rgba(255,193,7,0.15);  color: #856404; }
+        .badge-success  { background: rgba(40,167,69,0.15);  color: #155724; }
+        .badge-danger   { background: rgba(220,53,69,0.15);  color: #721c24; }
+        .badge-secondary{ background: rgba(108,114,117,0.15);color: #383d41; }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <a href="index.html" class="sidebar-brand">Lux<span>Hotel</span></a>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="dashboard.html" class="active">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-bed"></i> Chambres
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-calendar-check"></i> Reservations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-money-bill-wave"></i> Paiements
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-users"></i> Clients
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-chart-bar"></i> Rapports
+                    </a>
+                </li>
+                <li style="margin-top: 2rem;">
+                    <a href="index.html">
+                        <i class="fas fa-sign-out-alt"></i> Deconnexion
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- CONTENU -->
+        <div class="dashboard-content">
+
+            <!-- HEADER -->
+            <div class="dashboard-header">
+                <div>
+                    <h1 class="dashboard-title">Tableau de bord</h1>
+                    <p style="color: #888; font-size: 0.85rem; margin-top: 0.25rem;">
+                        Bienvenue, <strong>Administrateur</strong>
+                    </p>
+                </div>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <span style="font-size: 0.85rem; color: #888;">
+                        <i class="fas fa-calendar me-1"></i> Avril 2026
+                    </span>
+                    <a href="reservation.html" class="btn btn-gold">
+                        <i class="fas fa-plus"></i> Nouvelle reservation
+                    </a>
+                </div>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div>
+                        <p class="stat-label">Chambres</p>
+                        <p class="stat-value">24</p>
+                    </div>
+                    <div class="stat-icon" style="background: rgba(26,26,46,0.1);">
+                        <i class="fas fa-bed" style="color: var(--secondary);"></i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div>
+                        <p class="stat-label">Reservations</p>
+                        <p class="stat-value">138</p>
+                    </div>
+                    <div class="stat-icon" style="background: rgba(201,168,76,0.15);">
+                        <i class="fas fa-calendar-check" style="color: var(--gold);"></i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div>
+                        <p class="stat-label">Clients</p>
+                        <p class="stat-value">94</p>
+                    </div>
+                    <div class="stat-icon" style="background: rgba(40,167,69,0.1);">
+                        <i class="fas fa-users" style="color: #28a745;"></i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div>
+                        <p class="stat-label">Revenus</p>
+                        <p class="stat-value" style="font-size: 1.4rem;">12.4M</p>
+                        <p style="font-size: 0.75rem; color: #28a745; margin-top: 0.25rem;">
+                            <i class="fas fa-arrow-up"></i> +18% ce mois
+                        </p>
+                    </div>
+                    <div class="stat-icon" style="background: rgba(23,162,184,0.1);">
+                        <i class="fas fa-money-bill-wave" style="color: #17a2b8;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRAPHIQUES -->
+            <div class="charts-grid">
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h3 class="dash-card-title">Reservations par mois</h3>
+                        <span style="font-size: 0.78rem; color: var(--gold); font-weight: 700;">2026</span>
+                    </div>
+                    <div class="dash-card-body">
+                        <canvas id="reservationsChart" height="120"></canvas>
+                    </div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h3 class="dash-card-title">Types de chambres</h3>
+                    </div>
+                    <div class="dash-card-body">
+                        <canvas id="chambresChart" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLEAU -->
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <h3 class="dash-card-title">Dernieres Reservations</h3>
+                    <a href="#" style="font-size: 0.8rem; color: var(--gold); font-weight: 700; text-decoration: none;">
+                        Voir tout →
+                    </a>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Chambre</th>
+                                <th>Arrivee</th>
+                                <th>Depart</th>
+                                <th>Prix</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Mamadou Diallo</strong></td>
+                                <td>Suite 301</td>
+                                <td>01/05/2026</td>
+                                <td>05/05/2026</td>
+                                <td style="color: var(--gold); font-weight: 700;">600 000 FCFA</td>
+                                <td><span class="badge badge-warning">En attente</span></td>
+                                <td>
+                                    <button class="action-btn" style="background: rgba(40,167,69,0.1); color: #28a745;">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="action-btn" style="background: rgba(220,53,69,0.1); color: #dc3545;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fatou Ndiaye</strong></td>
+                                <td>Double 102</td>
+                                <td>03/05/2026</td>
+                                <td>07/05/2026</td>
+                                <td style="color: var(--gold); font-weight: 700;">300 000 FCFA</td>
+                                <td><span class="badge badge-success">Confirmee</span></td>
+                                <td>
+                                    <button class="action-btn" style="background: rgba(40,167,69,0.1); color: #28a745;">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="action-btn" style="background: rgba(220,53,69,0.1); color: #dc3545;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ibrahima Sow</strong></td>
+                                <td>Familiale 205</td>
+                                <td>10/05/2026</td>
+                                <td>15/05/2026</td>
+                                <td style="color: var(--gold); font-weight: 700;">600 000 FCFA</td>
+                                <td><span class="badge badge-warning">En attente</span></td>
+                                <td>
+                                    <button class="action-btn" style="background: rgba(40,167,69,0.1); color: #28a745;">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="action-btn" style="background: rgba(220,53,69,0.1); color: #dc3545;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aissatou Ba</strong></td>
+                                <td>Simple 101</td>
+                                <td>12/05/2026</td>
+                                <td>14/05/2026</td>
+                                <td style="color: var(--gold); font-weight: 700;">90 000 FCFA</td>
+                                <td><span class="badge badge-danger">Annulee</span></td>
+                                <td>
+                                    <button class="action-btn" style="background: rgba(40,167,69,0.1); color: #28a745;">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="action-btn" style="background: rgba(220,53,69,0.1); color: #dc3545;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Graphique reservations
+        new Chart(document.getElementById('reservationsChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Reservations',
+                    data: [8, 12, 15, 22, 18, 25, 30, 28, 20, 16, 14, 10],
+                    borderColor: '#c9a84c',
+                    backgroundColor: 'rgba(201,168,76,0.08)',
+                    borderWidth: 2.5,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#c9a84c',
+                    pointRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 5 }, grid: { color: 'rgba(0,0,0,0.04)' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Graphique types
+        new Chart(document.getElementById('chambresChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Simple', 'Double', 'Suite', 'Familiale'],
+                datasets: [{
+                    data: [8, 10, 4, 2],
+                    backgroundColor: ['#1a1a2e', '#c9a84c', '#28a745', '#17a2b8'],
+                    borderWidth: 0,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom', labels: { padding: 15, font: { size: 11 } } } },
+                cutout: '70%'
+            }
+        });
+    </script>
+</body>
+</html>

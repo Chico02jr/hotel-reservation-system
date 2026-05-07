@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation — LuxHotel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-brand">Lux<span>Hotel</span></a>
+            <button class="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="chambres.html">Chambres</a></li>
+                <li><a href="login.html">Connexion</a></li>
+                <li><a href="register.html" class="btn btn-gold">Reserver</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div style="background: var(--secondary); padding: 4rem 0; text-align: center; color: white;">
+            <span class="section-label">Votre sejour</span>
+            <h1 style="font-size: 2.5rem; margin-top: 0.5rem;">Formulaire de Reservation</h1>
+            <div class="gold-divider"></div>
+        </div>
+
+        <section class="section section-cream">
+            <div class="container">
+                <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 3rem; align-items: start;">
+
+                    <!-- FORMULAIRE -->
+                    <div class="form-card" style="padding: 2.5rem;">
+                        <h3 style="font-family: 'Playfair Display', serif; color: var(--secondary); margin-bottom: 2rem;">
+                            Vos informations
+                        </h3>
+
+                        <form id="reservationForm">
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Nom complet</label>
+                                    <input type="text" name="name" class="form-control"
+                                        placeholder="Jean Dupont" required>
+                                    <span class="form-feedback"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control"
+                                        placeholder="votre@email.com" required>
+                                    <span class="form-feedback"></span>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Date d'arrivee</label>
+                                    <input type="date" id="date_arrivee" name="date_arrivee"
+                                        class="form-control" required>
+                                    <span class="form-feedback"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Date de depart</label>
+                                    <input type="date" id="date_depart" name="date_depart"
+                                        class="form-control" required>
+                                    <span class="form-feedback"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Nombre de personnes</label>
+                                <select name="nombre_personnes" class="form-control" required>
+                                    <option value="">Selectionnez</option>
+                                    <option value="1">1 personne</option>
+                                    <option value="2">2 personnes</option>
+                                    <option value="3">3 personnes</option>
+                                    <option value="4">4 personnes</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Type de chambre</label>
+                                <select name="type_chambre" id="type_chambre" class="form-control" required>
+                                    <option value="">Selectionnez</option>
+                                    <option value="simple" data-prix="45000">Simple — 45 000 FCFA/nuit</option>
+                                    <option value="double" data-prix="75000">Double — 75 000 FCFA/nuit</option>
+                                    <option value="suite" data-prix="150000">Suite Prestige — 150 000 FCFA/nuit</option>
+                                    <option value="familiale" data-prix="120000">Familiale — 120 000 FCFA/nuit</option>
+                                    <option value="suite-royale" data-prix="250000">Suite Royale — 250 000 FCFA/nuit</option>
+                                </select>
+                            </div>
+
+                            <!-- Input caché pour le prix -->
+                            <input type="hidden" id="prix_par_nuit" value="0">
+
+                            <div class="form-group">
+                                <label class="form-label">Demandes speciales</label>
+                                <textarea name="demandes_speciales" class="form-control" rows="3"
+                                    placeholder="Ex: chambre non-fumeur, lit bebe, vue sur mer..."></textarea>
+                            </div>
+
+                            <!-- CALCUL PRIX -->
+                            <div class="price-box" id="prix_box">
+                                <div class="price-row">
+                                    <span>Type de chambre</span>
+                                    <span id="type_label">—</span>
+                                </div>
+                                <div class="price-row">
+                                    <span>Prix par nuit</span>
+                                    <span id="prix_nuit_label">—</span>
+                                </div>
+                                <div class="price-row">
+                                    <span>Nombre de nuits</span>
+                                    <span id="nb_nuits">—</span>
+                                </div>
+                                <div class="price-total">
+                                    <span>Total estimatif</span>
+                                    <span id="prix_total">—</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-gold btn-full" style="margin-top: 1rem; padding: 1rem;">
+                                <i class="fas fa-check" style="margin-right: 0.5rem;"></i>
+                                Confirmer la reservation
+                            </button>
+
+                        </form>
+                    </div>
+
+                    <!-- RECAP -->
+                    <div>
+                        <div class="form-card" style="padding: 2rem; background: var(--secondary); color: white;">
+                            <h4 style="font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 1.5rem;">
+                                Pourquoi nous choisir ?
+                            </h4>
+                            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                    <i class="fas fa-shield-alt" style="color: var(--gold); margin-top: 3px;"></i>
+                                    <div>
+                                        <p style="font-weight: 700; margin-bottom: 0.25rem;">Reservation securisee</p>
+                                        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6);">Vos donnees sont protegees</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                    <i class="fas fa-undo" style="color: var(--gold); margin-top: 3px;"></i>
+                                    <div>
+                                        <p style="font-weight: 700; margin-bottom: 0.25rem;">Annulation gratuite</p>
+                                        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6);">Jusqu'a 48h avant l'arrivee</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                    <i class="fas fa-headset" style="color: var(--gold); margin-top: 3px;"></i>
+                                    <div>
+                                        <p style="font-weight: 700; margin-bottom: 0.25rem;">Support 24h/24</p>
+                                        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6);">Notre equipe est toujours disponible</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                    <i class="fas fa-star" style="color: var(--gold); margin-top: 3px;"></i>
+                                    <div>
+                                        <p style="font-weight: 700; margin-bottom: 0.25rem;">Meilleur prix garanti</p>
+                                        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6);">Aucun frais cache</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-brand">Lux<span>Hotel</span></p>
+        <p>2026 &copy; LuxHotel — L'art de recevoir</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Date min
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date_arrivee').min = today;
+        document.getElementById('date_depart').min  = today;
+
+        // Lire les params URL
+        const params = new URLSearchParams(window.location.search);
+        const typeParam = params.get('type');
+        const prixParam = params.get('prix');
+
+        if (typeParam) {
+            const select = document.getElementById('type_chambre');
+            for (let opt of select.options) {
+                if (opt.value === typeParam) {
+                    opt.selected = true;
+                    document.getElementById('prix_par_nuit').value = prixParam || opt.dataset.prix;
+                }
+            }
+        }
+
+        // Changer prix selon type
+        document.getElementById('type_chambre').addEventListener('change', function () {
+            const opt = this.options[this.selectedIndex];
+            document.getElementById('prix_par_nuit').value = opt.dataset.prix || 0;
+            calculerPrix();
+        });
+
+        function calculerPrix() {
+            const arrivee = new Date(document.getElementById('date_arrivee').value);
+            const depart  = new Date(document.getElementById('date_depart').value);
+            const prix    = parseFloat(document.getElementById('prix_par_nuit').value);
+            const select  = document.getElementById('type_chambre');
+            const prixBox = document.getElementById('prix_box');
+
+            if (document.getElementById('date_arrivee').value &&
+                document.getElementById('date_depart').value &&
+                depart > arrivee && prix > 0) {
+
+                const nuits = Math.round((depart - arrivee) / (1000 * 60 * 60 * 24));
+                const total = nuits * prix;
+
+                document.getElementById('type_label').textContent     = select.options[select.selectedIndex].text;
+                document.getElementById('prix_nuit_label').textContent = prix.toLocaleString('fr-FR') + ' FCFA';
+                document.getElementById('nb_nuits').textContent        = nuits + ' nuit(s)';
+                document.getElementById('prix_total').textContent      = total.toLocaleString('fr-FR') + ' FCFA';
+                prixBox.style.display = 'block';
+            } else {
+                prixBox.style.display = 'none';
+            }
+        }
+
+        document.getElementById('date_arrivee').addEventListener('change', function() {
+            document.getElementById('date_depart').min = this.value;
+            calculerPrix();
+        });
+
+        document.getElementById('date_depart').addEventListener('change', calculerPrix);
+    </script>
+</body>
+</html>

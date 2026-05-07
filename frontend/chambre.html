@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Chambres — LuxHotel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-brand">Lux<span>Hotel</span></a>
+            <button class="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="chambres.html">Chambres</a></li>
+                <li><a href="login.html">Connexion</a></li>
+                <li><a href="register.html" class="btn btn-gold">Reserver</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- HEADER -->
+        <div style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+             url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1600') center/cover;
+             padding: 6rem 0; text-align: center; color: white;">
+            <span class="section-label">Notre collection</span>
+            <h1 style="font-size: 3rem; margin-top: 0.5rem;">Nos Chambres & Suites</h1>
+            <div class="gold-divider"></div>
+        </div>
+
+        <!-- FILTRES -->
+        <div style="background: white; padding: 2rem 0; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+            <div class="container">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; align-items: end;">
+                    <div>
+                        <label class="form-label">Type de chambre</label>
+                        <select class="form-control" id="filter-type">
+                            <option value="">Tous les types</option>
+                            <option value="simple">Simple</option>
+                            <option value="double">Double</option>
+                            <option value="suite">Suite</option>
+                            <option value="familiale">Familiale</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Date d'arrivee</label>
+                        <input type="date" class="form-control" id="filter-arrivee">
+                    </div>
+                    <div>
+                        <label class="form-label">Date de depart</label>
+                        <input type="date" class="form-control" id="filter-depart">
+                    </div>
+                    <div>
+                        <button class="btn btn-gold btn-full" onclick="filtrerChambres()">
+                            <i class="fas fa-search"></i> Rechercher
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHAMBRES -->
+        <section class="section section-cream">
+            <div class="container">
+                <div class="grid-3" id="chambres-grid">
+
+                    <!-- Chambre 1 -->
+                    <div class="card" data-type="simple">
+                        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600"
+                             alt="Chambre Simple" class="card-img">
+                        <div class="card-body">
+                            <span class="card-badge">Simple</span>
+                            <h3 class="card-title">Chambre Simple</h3>
+                            <p class="card-text">Elegante et confortable, ideale pour un sejour en solo.</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.85rem; color: #888;">
+                                    <i class="fas fa-user"></i> 1 personne
+                                </span>
+                                <span class="card-price">45 000 FCFA / nuit</span>
+                            </div>
+                        </div>
+                        <div class="card-footer-custom">
+                            <a href="reservation.html?type=simple&prix=45000" class="btn btn-gold btn-full">
+                                Reserver cette chambre
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Chambre 2 -->
+                    <div class="card" data-type="double">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600"
+                             alt="Chambre Double" class="card-img">
+                        <div class="card-body">
+                            <span class="card-badge">Double</span>
+                            <h3 class="card-title">Chambre Double</h3>
+                            <p class="card-text">Spacieuse et romantique, parfaite pour les couples.</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.85rem; color: #888;">
+                                    <i class="fas fa-user-friends"></i> 2 personnes
+                                </span>
+                                <span class="card-price">75 000 FCFA / nuit</span>
+                            </div>
+                        </div>
+                        <div class="card-footer-custom">
+                            <a href="reservation.html?type=double&prix=75000" class="btn btn-gold btn-full">
+                                Reserver cette chambre
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Chambre 3 -->
+                    <div class="card" data-type="suite">
+                        <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600"
+                             alt="Suite" class="card-img">
+                        <div class="card-body">
+                            <span class="card-badge">Suite</span>
+                            <h3 class="card-title">Suite Prestige</h3>
+                            <p class="card-text">Le summum du luxe avec salon prive et vue panoramique.</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.85rem; color: #888;">
+                                    <i class="fas fa-user-friends"></i> 2 personnes
+                                </span>
+                                <span class="card-price">150 000 FCFA / nuit</span>
+                            </div>
+                        </div>
+                        <div class="card-footer-custom">
+                            <a href="reservation.html?type=suite&prix=150000" class="btn btn-gold btn-full">
+                                Reserver cette chambre
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Chambre 4 -->
+                    <div class="card" data-type="familiale">
+                        <img src="https://images.unsplash.com/photo-1595576508898-0ad5c879a061?w=600"
+                             alt="Chambre Familiale" class="card-img">
+                        <div class="card-body">
+                            <span class="card-badge">Familiale</span>
+                            <h3 class="card-title">Chambre Familiale</h3>
+                            <p class="card-text">Vaste et confortable, pensee pour les familles.</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.85rem; color: #888;">
+                                    <i class="fas fa-users"></i> 4 personnes
+                                </span>
+                                <span class="card-price">120 000 FCFA / nuit</span>
+                            </div>
+                        </div>
+                        <div class="card-footer-custom">
+                            <a href="reservation.html?type=familiale&prix=120000" class="btn btn-gold btn-full">
+                                Reserver cette chambre
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Chambre 5 -->
+                    <div class="card" data-type="suite">
+                        <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=600"
+                             alt="Suite Royale" class="card-img">
+                        <div class="card-body">
+                            <span class="card-badge">Suite</span>
+                            <h3 class="card-title">Suite Royale</h3>
+                            <p class="card-text">Notre suite la plus exclusive avec jacuzzi et terrasse privee.</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.85rem; color: #888;">
+                                    <i class="fas fa-user-friends"></i> 2 personnes
+                                </span>
+                                <span class="card-price">250 000 FCFA / nuit</span>
+                            </div>
+                        </div>
+                        <div class="card-footer-custom">
+                            <a href="reservation.html?type=suite-royale&prix=250000" class="btn btn-gold btn-full">
+                                Reserver cette chambre
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Chambre 6 -->
+                    <div class="card" data-type="double">
+                        <img src="https://images.unsplash.com/photo-1566195992011-5f6b21e539aa?w=600"
+                             alt="Chambre Double Deluxe" class="card-img">
+                        <div class="card-body">
+                            <span class="card-badge">Double</span>
+                            <h3 class="card-title">Double Deluxe</h3>
+                            <p class="card-text">Chambre double avec balcon prive et vue sur jardin.</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="font-size: 0.85rem; color: #888;">
+                                    <i class="fas fa-user-friends"></i> 2 personnes
+                                </span>
+                                <span class="card-price">95 000 FCFA / nuit</span>
+                            </div>
+                        </div>
+                        <div class="card-footer-custom">
+                            <a href="reservation.html?type=double-deluxe&prix=95000" class="btn btn-gold btn-full">
+                                Reserver cette chambre
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-brand">Lux<span>Hotel</span></p>
+        <p>2026 &copy; LuxHotel — L'art de recevoir</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Filtre par type
+        function filtrerChambres() {
+            const type = document.getElementById('filter-type').value;
+            const cards = document.querySelectorAll('#chambres-grid .card');
+            cards.forEach(card => {
+                if (!type || card.dataset.type === type) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Date min
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('filter-arrivee').min = today;
+        document.getElementById('filter-depart').min  = today;
+
+        document.getElementById('filter-arrivee').addEventListener('change', function () {
+            document.getElementById('filter-depart').min = this.value;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion — LuxHotel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <main>
+        <div class="form-page">
+            <div class="form-container">
+                <div class="form-card">
+
+                    <div class="form-header">
+                        <a href="index.html" class="form-logo">Lux<span>Hotel</span></a>
+                        <h2 class="form-title">Bon retour</h2>
+                        <p class="form-subtitle">Connectez-vous pour acceder a votre espace</p>
+                    </div>
+
+                    <form id="loginForm" action="#" method="POST">
+
+                        <div class="form-group">
+                            <label class="form-label">Adresse Email</label>
+                            <input type="email" name="email" class="form-control"
+                                placeholder="votre@email.com" required>
+                            <span class="form-feedback"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mot de passe</label>
+                            <input type="password" name="password" class="form-control"
+                                placeholder="••••••••" required>
+                            <span class="form-feedback"></span>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer;">
+                                <input type="checkbox" name="remember"> Se souvenir de moi
+                            </label>
+                            <a href="#" style="font-size: 0.85rem; color: var(--gold); text-decoration: none;">
+                                Mot de passe oublie ?
+                            </a>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold btn-full">
+                            Se connecter
+                        </button>
+
+                    </form>
+
+                    <div class="form-divider">ou</div>
+
+                    <div class="form-footer">
+                        Pas encore de compte ?
+                        <a href="register.html">Creer un compte</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

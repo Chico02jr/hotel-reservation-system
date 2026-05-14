@@ -6,6 +6,8 @@ use App\Models\Chambre;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\ReservationConfirmation;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationController extends Controller
 {
@@ -14,31 +16,35 @@ class ReservationController extends Controller
         return view('reservations.create', compact('chambre'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'chambre_id'   => 'required|exists:chambres,id',
-            'date_arrivee' => 'required|date',
-            'date_depart'  => 'required|date',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'chambre_id'   => 'required|exists:chambres,id',
+        'date_arrivee' => 'required|date',
+        'date_depart'  => 'required|date',
+    ]);
 
-        $chambre = Chambre::findOrFail($request->chambre_id);
+    $chambre = Chambre::findOrFail($request->chambre_id);
 
-        $jours = \Carbon\Carbon::parse($request->date_arrivee)
-                    ->diffInDays($request->date_depart);
+    $jours = \Carbon\Carbon::parse($request->date_arrivee)
+                ->diffInDays($request->date_depart);
 
-        Reservation::create([
-            'user_id'      => 1,
-            'chambre_id'   => $request->chambre_id,
-            'date_arrivee' => $request->date_arrivee,
-            'date_depart'  => $request->date_depart,
-            'statut'       => 'en_attente',
-            'montant_total'=> $chambre->prix_par_nuit * $jours,
-        ]);
+    $reservation = Reservation::create([
+        'user_id'      => Auth::id() ?? 1,
+        'chambre_id'   => $request->chambre_id,
+        'date_arrivee' => $request->date_arrivee,
+        'date_depart'  => $request->date_depart,
+        'statut'       => 'en_attente',
+        'montant_total'=> $chambre->prix_par_nuit * $jours,
+    ]);
 
-        echo "Réservation effectuée avec succès !";
-        exit;
-    }
+    $chambre->update(['statut' => 'occupee']);
+
+    Mail::to(Auth::user()->email ?? 'test@test.com')
+        ->send(new ReservationConfirmation($reservation));
+
+    return redirect('/reservations');
+}
 
    public function index()
 {

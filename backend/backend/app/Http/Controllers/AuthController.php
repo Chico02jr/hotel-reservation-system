@@ -21,10 +21,13 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            $request->session()->regenerate();
-            return redirect()->intended('/chambres');
-        }
+       if (Auth::attempt($request->only('email', 'password'))) {
+    $request->session()->regenerate();
+    if (Auth::user()->role === 'admin') {
+        return redirect('/admin/dashboard');
+    }
+    return redirect('/chambres');
+}
 
         return back()->withErrors([
             'email' => 'Email ou mot de passe incorrect.',

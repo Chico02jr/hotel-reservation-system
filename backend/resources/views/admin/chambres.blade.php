@@ -1,3 +1,4 @@
-<div>
-    <!-- Let all your things have their places; let each part of your business have its time. - Benjamin Franklin -->
-</div>
+@extends('layouts.app')
+@section('content')
+<div class='container' style='max-width:1000px;margin:50px auto;'><h2>Gestion des Chambres</h2><a href='/chambres' style='background:#c9a84c;color:white;padding:8px 16px;border-radius:5px;text-decoration:none;'>Voir les chambres</a><table style='width:100%;margin-top:20px;border-collapse:collapse;'><thead><tr style='background:#1a1a2e;color:white;'><th style='padding:10px;'>Numéro</th><th style='padding:10px;'>Type</th><th style='padding:10px;'>Prix/nuit</th><th style='padding:10px;'>Statut</th></tr></thead><tbody>@foreach(App\Models\Chambre::all() as $c)<tr style='border-bottom:1px solid #ddd;'><td style='padding:10px;text-align:center;'>{{ $c->numero }}</td><td style='padding:10px;text-align:center;'>{{ $c->type }}</td><td style='padding:10px;text-align:center;'>{{ number_format($c->prix_par_nuit) }} FCFA</td><td style='padding:10px;text-align:center;'>{{ $c->statut }}</td></tr>@endforeach</tbody></table></div>
+@endsection

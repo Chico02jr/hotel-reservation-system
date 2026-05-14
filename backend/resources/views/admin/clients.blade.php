@@ -1,0 +1,4 @@
+@extends('layouts.app')
+@section('content')
+<div class='container' style='max-width:900px;margin:50px auto;'><h2>Liste des Clients</h2><table style='width:100%;margin-top:20px;border-collapse:collapse;'><thead><tr style='background:#1a1a2e;color:white;'><th style='padding:10px;'>Nom</th><th style='padding:10px;'>Email</th><th style='padding:10px;'>Téléphone</th><th style='padding:10px;'>Inscrit le</th></tr></thead><tbody>@foreach($clients as $c)<tr style='border-bottom:1px solid #ddd;'><td style='padding:10px;'>{{ $c->name }}</td><td style='padding:10px;'>{{ $c->email }}</td><td style='padding:10px;'>{{ $c->phone ?? 'N/A' }}</td><td style='padding:10px;'>{{ $c->created_at->format('d/m/Y') }}</td></tr>@endforeach</tbody></table></div>
+@endsection

@@ -220,7 +220,7 @@
             labels: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [{
                 label: 'Reservations',
-                data: @json($reservationsParMois ?? [0,0,0,0,0,0,0,0,0,0,0,0]),
+                data: {{ json_encode($reservationsParMois ?? [0,0,0,0,0,0,0,0,0,0,0,0]) }},
                 borderColor: '#c9a84c',
                 backgroundColor: 'rgba(201,168,76,0.1)',
                 borderWidth: 2,
@@ -244,7 +244,7 @@
         data: {
             labels: ['Simple', 'Double', 'Suite', 'Familiale'],
             datasets: [{
-                data: @json($chambresParType ?? [0,0,0,0]),
+              data: {{ json_encode($chambresParType ?? [0,0,0,0]) }},
                 backgroundColor: ['#1a1a2e', '#c9a84c', '#28a745', '#17a2b8'],
                 borderWidth: 0
             }]

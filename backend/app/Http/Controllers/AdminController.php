@@ -25,13 +25,12 @@ class AdminController extends Controller
         // Reservations par mois
         $reservationsParMois = array_fill(0, 12, 0);
         $data = Reservation::select(
-                    DB::raw('MONTH(created_at) as mois'),
-                    DB::raw('COUNT(*) as total')
-                )
-                ->whereYear('created_at', date('Y'))
-                ->groupBy('mois')
-                ->get();
-
+    DB::raw("strftime('%m', created_at) as mois"),
+    DB::raw('COUNT(*) as total')
+)
+->whereRaw("strftime('%Y', created_at) = ?", [date('Y')])
+->groupBy('mois')
+->get();
         foreach ($data as $item) {
             $reservationsParMois[$item->mois - 1] = $item->total;
         }

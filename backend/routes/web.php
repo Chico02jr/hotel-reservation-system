@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChambreController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\AdminController;
+use App\Http\Middleware\AdminMiddleware;
 
 // Page Accueil
 Route::get('/', function () {
@@ -31,7 +32,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Routes Admin
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/chambres', [AdminController::class, 'chambres'])->name('admin.chambres');
     Route::post('/chambres', [ChambreController::class, 'store'])->name('admin.chambres.store');
@@ -40,4 +41,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/reservations', [AdminController::class, 'reservations'])->name('admin.reservations');
     Route::put('/reservations/{reservation}/confirmer', [AdminController::class, 'confirmerReservation'])->name('admin.reservations.confirmer');
     Route::put('/reservations/{reservation}/annuler', [AdminController::class, 'annulerReservation'])->name('admin.reservations.annuler');
+    Route::get('/clients', function() {
+        $clients = App\Models\User::where('role', 'client')->get();
+        return view('admin.clients', compact('clients'));
+    })->name('admin.clients');
+    Route::get('/paiements', function() {
+        $paiements = App\Models\Paiement::with('reservation')->latest()->get();
+        return view('admin.paiements', compact('paiements'));
+    })->name('admin.paiements');
 });

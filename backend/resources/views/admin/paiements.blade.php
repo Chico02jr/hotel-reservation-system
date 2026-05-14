@@ -1,0 +1,4 @@
+@extends('layouts.app')
+@section('content')
+<div class='container' style='max-width:900px;margin:50px auto;'><h2>Paiements</h2><table style='width:100%;margin-top:20px;border-collapse:collapse;'><thead><tr style='background:#1a1a2e;color:white;'><th style='padding:10px;'>ID</th><th style='padding:10px;'>Réservation</th><th style='padding:10px;'>Montant</th><th style='padding:10px;'>Statut</th></tr></thead><tbody>@forelse($paiements as $p)<tr style='border-bottom:1px solid #ddd;'><td style='padding:10px;text-align:center;'>{{ $p->id }}</td><td style='padding:10px;text-align:center;'>{{ $p->reservation_id }}</td><td style='padding:10px;text-align:center;'>{{ number_format($p->montant) }} FCFA</td><td style='padding:10px;text-align:center;'>{{ $p->statut }}</td></tr>@empty<tr><td colspan='4' style='padding:20px;text-align:center;'>Aucun paiement pour le moment.</td></tr>@endforelse</tbody></table></div>
+@endsection
